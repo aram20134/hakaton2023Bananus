@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
-import { AppBar, Avatar, Badge, Box, IconButton, Toolbar, Tooltip } from '@mui/material';
+import { AppBar, Avatar, Badge, Box, IconButton, InputAdornment, SvgIcon, TextField, Toolbar, Tooltip } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import { Bell as BellIcon } from '../icons/bell';
@@ -16,8 +16,8 @@ const DashboardNavbarRoot = styled(AppBar)(({ theme }) => ({
 
 export const DashboardNavbar = (props) => {
   const { onSidebarOpen, ...other } = props;
-  const settingsRef = useRef(null);
-  const [openAccountPopover, setOpenAccountPopover] = useState(false);
+  const [search, setSearch] = useState('')
+  const [isOpen, setIsOpen] = useState(false)
 
   return (
     <>
@@ -50,12 +50,36 @@ export const DashboardNavbar = (props) => {
           >
             <MenuIcon fontSize="small" />
           </IconButton>
-          <Tooltip title="Search">
-            <IconButton sx={{ ml: 1 }}>
-              <SearchIcon fontSize="small" />
-              Текст инпут
-            </IconButton>
-          </Tooltip>
+          
+            {isOpen 
+            ? (
+              <>
+                <TextField
+                  fullWidth
+                  InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <SvgIcon
+                        color="action"
+                        fontSize="small"
+                      >
+                        <SearchIcon />
+                      </SvgIcon>
+                    </InputAdornment>
+                  )
+                  }}
+                  placeholder="Search customer"
+                  variant="outlined"
+                />
+              </>
+            ) 
+            : (
+              <Tooltip title="Search">
+                <IconButton onClick={() => setIsOpen(!isOpen)} sx={{ ml: 1 }}>
+                  <SearchIcon fontSize="small" />
+                </IconButton>
+              </Tooltip>
+          )}
           <Box sx={{ flexGrow: 1 }} />
         </Toolbar>
       </DashboardNavbarRoot>

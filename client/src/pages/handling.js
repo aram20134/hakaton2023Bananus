@@ -8,7 +8,7 @@ const Page = () => (
   <>
     <Head>
       <title>
-        Account | Material Kit
+        Оработка заявлений | Bananos House Manager
       </title>
     </Head>
     <Box

@@ -20,7 +20,7 @@ const items = [
   {
     href: '/',
     icon: (<ChartBarIcon fontSize="small" />),
-    title: 'Dashboard'
+    title: 'Главная '
   },
   {
     href: '/layout',
@@ -42,16 +42,16 @@ const items = [
     icon: (<CogIcon fontSize="small" />),
     title: 'Видеонаблюдение'
   },
-  // {
-  //   href: '/login',
-  //   icon: (<LockIcon fontSize="small" />),
-  //   title: 'Login'
-  // },
-  // {
-  //   href: '/register',
-  //   icon: (<UserAddIcon fontSize="small" />),
-  //   title: 'Register'
-  // },
+  {
+    href: '/login',
+    icon: (<LockIcon fontSize="small" />),
+    title: 'Показание счётчиков'
+  },
+  {
+    href: '/register',
+    icon: (<UserAddIcon fontSize="small" />),
+    title: 'СКУД и освещение'
+  },
   // {
   //   href: '/404',
   //   icon: (<XCircleIcon fontSize="small" />),
@@ -93,13 +93,16 @@ export const DashboardSidebar = (props) => {
         <div>
           <Box sx={{ p: 3 }}>
             <NextLink href="/" passHref>
-              <a>
+              <a style={{ display:'flex', flexDirection:'row', alignItems:'center', gap:'25px', textDecoration:'none', color:'white'}}>
                 <Logo sx={{height: 42, width: 42}} />
+                <Box sx={{textAlign:'center', fontSize:'20px'}}>
+                  BHM
+                </Box>
               </a>
             </NextLink>
           </Box>
           <Box sx={{textAlign:'center'}}>
-            DashBoard
+            Banana House Manager
           </Box>
         </div>
         <Divider

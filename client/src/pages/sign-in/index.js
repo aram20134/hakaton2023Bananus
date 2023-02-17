@@ -79,7 +79,7 @@ const Page = () => {
   return (
     <>
       <Head>
-        <title>Sign in | Material Kit</title>
+        <title>Вход | Banana House Manager</title>
       </Head>
       <Box
         component="main"

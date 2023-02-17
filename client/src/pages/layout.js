@@ -9,7 +9,7 @@ const Page = () => (
   <>
     <Head>
       <title>
-        Customers | Material Kit
+        Планировка | Bananos House Manager
       </title>
     </Head>
     <Box

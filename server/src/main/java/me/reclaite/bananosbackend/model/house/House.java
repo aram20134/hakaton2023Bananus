@@ -19,7 +19,7 @@ public class House {
     private String address;
     private HouseType houseType;
 
-    private int plannerId;
+    private int layoutId;
 
     @Nullable
     private int apartment;

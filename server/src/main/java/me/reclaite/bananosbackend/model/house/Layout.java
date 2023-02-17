@@ -10,14 +10,12 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-public class Planner {
+public class Layout {
 
     @Id
     private int id;
 
-    private String planningImageUrl;
-    private int roomAmount;
-    private float area;
-
+    private int area;
+    private int roomsAmount;
 
 }

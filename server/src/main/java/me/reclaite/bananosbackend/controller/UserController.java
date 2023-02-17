@@ -24,7 +24,11 @@ public class UserController {
                                 @RequestParam String description) {
         User user = userRepository.getById(userId);
 
-        Report report = new Report(reportType, description, user);
+        Report report = new Report();
+        report.setReporterId(user.getId());
+        report.setReportType(reportType);
+        report.setDescription(description);
+
         houseService.getReportRepository().saveAndFlush(report);
 
         return report;

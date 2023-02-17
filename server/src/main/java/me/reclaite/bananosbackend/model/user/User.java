@@ -3,10 +3,12 @@ package me.reclaite.bananosbackend.model.user;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import lombok.Getter;
 
 import java.util.List;
 
 @Entity
+@Getter
 public class User {
 
     @Id

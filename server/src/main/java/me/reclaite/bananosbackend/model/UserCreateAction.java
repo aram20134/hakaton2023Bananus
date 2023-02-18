@@ -5,8 +5,11 @@ import lombok.Data;
 @Data
 public class UserCreateAction {
 
-    private final int telegramId;
+    private final long telegramId;
+    private final String telegramUsername;
 
     private final String complex;
+
+    private final int apartment;
 
 }

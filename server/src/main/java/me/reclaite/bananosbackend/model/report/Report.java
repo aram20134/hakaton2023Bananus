@@ -1,10 +1,11 @@
 package me.reclaite.bananosbackend.model.report;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+
+import java.util.Date;
 
 @Data
 @Getter
@@ -13,9 +14,20 @@ import lombok.RequiredArgsConstructor;
 public class Report {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    private ReportType reportType;
+    private ReportStatus reportStatus;
+
+    @Basic
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date creationDate;
+
+    @PrePersist
+    protected void onCreate() {
+        creationDate = new Date();
+    }
+
     private String description;
     private Long reporterId;
 

@@ -3,8 +3,7 @@ package me.reclaite.bananosbackend.model.user;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.List;
+import me.reclaite.bananosbackend.model.apartment.UserApartment;
 
 @Getter
 @Setter
@@ -14,10 +13,11 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
-    // todo: auth with the telegram bot
-    private int telegramId;
+    private Long telegramId;
 
-    @ElementCollection
-    private List<Long> ownedHouses;
+    private String telegramUsername;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private UserApartment ownedHouse;
 
 }

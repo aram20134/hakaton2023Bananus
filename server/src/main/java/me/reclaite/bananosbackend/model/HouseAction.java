@@ -16,6 +16,8 @@ public class HouseAction {
     private final String houseAddress;
     private final HouseType houseType;
 
+    private final int apartment;
+
     private final Layout layout;
     private final float price;
 

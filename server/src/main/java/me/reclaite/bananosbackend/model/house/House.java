@@ -4,8 +4,11 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import me.reclaite.bananosbackend.model.apartment.ApartmentMetric;
 import me.reclaite.bananosbackend.model.company.Company;
-import me.reclaite.bananosbackend.model.user.User;
+import me.reclaite.bananosbackend.model.report.Report;
+
+import java.util.List;
 
 @Data
 @Getter
@@ -24,7 +27,13 @@ public class House {
     private String address;
     private HouseType houseType;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private Layout layout;
+    private float latitude;
+    private float longtitude;
+
+    @OneToMany
+    private List<Layout> layouts;
+
+    @OneToMany
+    private List<Report> reports;
 
 }

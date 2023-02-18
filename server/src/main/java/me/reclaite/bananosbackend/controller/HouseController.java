@@ -9,6 +9,7 @@ import me.reclaite.bananosbackend.service.HouseService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
+import java.util.Collections;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,7 +23,7 @@ public class HouseController {
         House house = new House();
 
         house.setOwner(action.getOwnerCompany());
-        house.setLayout(action.getLayout());
+        house.setLayouts(Collections.singletonList(action.getLayout()));
         house.setAddress(action.getHouseAddress());
         house.setHouseType(action.getHouseType());
 
@@ -35,7 +36,7 @@ public class HouseController {
 
         house.setHouseName(action.getHouseName());
         house.setAddress(action.getHouseAddress());
-        house.setLayout(action.getLayout());
+        house.setLayouts(Collections.singletonList(action.getLayout()));
 
         return house;
     }
@@ -52,7 +53,7 @@ public class HouseController {
         layout.setArea(area);
         layout.setRoomsAmount(roomsAmount);
 
-        house.setLayout(layout);
+        house.setLayouts(Collections.singletonList(layout));
 
         return "OK";
     }

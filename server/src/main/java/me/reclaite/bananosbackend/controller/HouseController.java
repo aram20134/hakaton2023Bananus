@@ -58,6 +58,11 @@ public class HouseController {
         return "OK";
     }
 
+    @GetMapping("/house")
+    public House getHouse(@RequestParam("id") long houseId) {
+        return houseService.getHouseRepository().findById(houseId).orElse(null);
+    }
+
     @GetMapping("/houses")
     public Collection<House> getRegisteredHouses() {
         return houseService.getHouseRepository().findAll();

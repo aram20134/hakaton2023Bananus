@@ -5,10 +5,16 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Getter;
+import lombok.Setter;
+
+import java.util.Random;
 
 @Entity
 @Getter
+@Setter
 public class ApartmentMetric {
+
+    private static Random random = new Random();
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -19,5 +25,9 @@ public class ApartmentMetric {
     private float water;
 
     private float electricity;
+
+    public static int getValue() {
+        return random.nextInt(304040);
+    }
 
 }

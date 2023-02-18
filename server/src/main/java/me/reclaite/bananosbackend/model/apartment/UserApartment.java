@@ -23,4 +23,7 @@ public class UserApartment {
     @OneToOne(cascade = CascadeType.ALL)
     private Layout layout;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    private ApartmentMetric metric;
+
 }

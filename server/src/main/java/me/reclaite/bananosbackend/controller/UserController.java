@@ -2,9 +2,11 @@ package me.reclaite.bananosbackend.controller;
 
 import lombok.RequiredArgsConstructor;
 import me.reclaite.bananosbackend.model.UserCreateAction;
+import me.reclaite.bananosbackend.model.apartment.ApartmentMetric;
 import me.reclaite.bananosbackend.model.apartment.UserApartment;
 import me.reclaite.bananosbackend.model.house.House;
 import me.reclaite.bananosbackend.model.report.Report;
+import me.reclaite.bananosbackend.model.report.ReportStatus;
 import me.reclaite.bananosbackend.model.user.User;
 import me.reclaite.bananosbackend.repository.ApartmentRepository;
 import me.reclaite.bananosbackend.repository.ReportRepository;
@@ -42,6 +44,14 @@ public class UserController {
 
         UserApartment apartment = new UserApartment();
         apartment.setHouse(house);
+
+        ApartmentMetric metric = new ApartmentMetric();
+        metric.setElectricity(ApartmentMetric.getValue());
+        metric.setGas(ApartmentMetric.getValue());
+        metric.setHeating(ApartmentMetric.getValue());
+        metric.setWater(ApartmentMetric.getValue());
+        apartment.setMetric(metric);
+
         apartmentRepository.saveAndFlush(apartment);
 
         user.setOwnedHouse(apartment);
@@ -54,9 +64,9 @@ public class UserController {
     public String registerUser(@RequestBody UserCreateAction action) {
         User user = userRepository.getReferenceById(action.getTelegramId());
 
-        House house = user.getOwnedHouse().getHouse();
+        UserApartment userApartment = user.getOwnedHouse();
+        House house = userApartment.getHouse();
 
-        UserApartment userApartment = new UserApartment();
         userApartment.setApartment(action.getApartment());
         userApartment.setLayout(house.getLayouts().stream().findAny().orElse(null));
 
@@ -75,6 +85,7 @@ public class UserController {
 
         Report report = new Report();
         report.setReporterId(user.getId());
+        report.setHouseId(user.getOwnedHouse().getHouse().getId());
         report.setDescription(description);
 
         user.getOwnedHouse().getHouse().getReports().add(report);
@@ -86,10 +97,42 @@ public class UserController {
         return "OK";
     }
 
+    @GetMapping("/report_status")
+    public String changeReportStatus(@RequestParam("id") long reportId,
+                                     @RequestParam("status") ReportStatus status) {
+        Report report = reportRepository.getReferenceById(reportId);
+
+        report.setReportStatus(status);
+        reportRepository.saveAndFlush(report);
+
+        return "OK";
+    }
+
+    @GetMapping("/allreports")
+    public List<Report> getAllReports() {
+        return reportRepository.findAll();
+    }
+
+    @GetMapping("/services")
+    public ApartmentMetric getApartmentMetric(@RequestParam("id") long telegramId) {
+        User user = getTelegramUser(telegramId);
+        return user.getOwnedHouse().getMetric();
+    }
+
     @GetMapping("/reports")
     public List<Report> getReports(@RequestParam("id") long id) {
         House house = houseService.getHouseRepository().getReferenceById(id);
         return house.getReports();
+    }
+
+    @GetMapping("/user")
+    public User getUser(@RequestParam("id") long userId) {
+        return userRepository.findById(userId).orElse(null);
+    }
+
+    @GetMapping("/tguser")
+    public User getTelegramUser(@RequestParam("tgId") long telegramId) {
+        return userRepository.getByTelegramId(telegramId);
     }
 
     @GetMapping("/users")

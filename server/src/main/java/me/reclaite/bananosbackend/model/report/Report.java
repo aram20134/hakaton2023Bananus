@@ -30,5 +30,6 @@ public class Report {
 
     private String description;
     private Long reporterId;
+    private Long houseId;
 
 }

@@ -1,6 +1,7 @@
 package me.reclaite.bananosbackend.controller;
 
 import lombok.RequiredArgsConstructor;
+import me.reclaite.bananosbackend.model.ReportInfo;
 import me.reclaite.bananosbackend.model.UserCreateAction;
 import me.reclaite.bananosbackend.model.apartment.ApartmentMetric;
 import me.reclaite.bananosbackend.model.apartment.UserApartment;
@@ -82,16 +83,15 @@ public class UserController {
         return "OK";
     }
 
-    // TODO: It should be in object for the security
     @PostMapping("/report")
-    public String reportProblem(@RequestParam("userId") long userId,
-                                @RequestParam String description) {
-        User user = userRepository.getReferenceById(userId);
+    public String reportProblem(@RequestBody ReportInfo reportInfo) {
+        User user = userRepository.getByTelegramId(reportInfo.getTelegramId());
 
         Report report = new Report();
         report.setOwnerName(user.getTelegramUsername());
         report.setHouseName(user.getOwnedHouse().getHouse().getHouseName());
-        report.setDescription(description);
+        report.setDescription(reportInfo.getDescription());
+        report.setReportStatus(ReportStatus.IN_PROCESS);
 
         user.getOwnedHouse().getHouse().getReports().add(report);
 

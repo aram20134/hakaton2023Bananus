@@ -7,9 +7,10 @@ import lombok.RequiredArgsConstructor;
 @Getter
 public enum HouseType {
 
-    APARTMENT("Квартира"),
-    HOUSE("Частный дом"),
-    PENTHOUSE("Пентхаус");
+    COMPLEX("Жилой комплекс"),
+    BUSINESS("Бизнес-центр"),
+    MALL("Апарт-отель"),
+    HOTEL("Отель");
 
     private final String name;
 

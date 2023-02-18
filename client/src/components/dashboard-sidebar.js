@@ -1,8 +1,8 @@
-import { useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
-import { Box, Button, Divider, Drawer, Typography, useMediaQuery } from '@mui/material';
+import { Box, Button, Divider, Drawer, FormControl, FormHelperText, InputLabel, MenuItem, Select, Typography, useMediaQuery } from '@mui/material';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import { ChartBar as ChartBarIcon } from '../icons/chart-bar';
 import { Cog as CogIcon } from '../icons/cog';
@@ -15,6 +15,13 @@ import { Users as UsersIcon } from '../icons/users';
 import { XCircle as XCircleIcon } from '../icons/x-circle';
 import { Logo } from './logo';
 import { NavItem } from './nav-item';
+import { BananaLogo } from '../icons/bananaLogo';
+import axios from 'axios'
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import VideocamIcon from '@mui/icons-material/Videocam';
+import BarChartIcon from '@mui/icons-material/BarChart';
+import CurrencyRubleIcon from '@mui/icons-material/CurrencyRuble';
+import { Context } from '../pages/_app';
 
 const items = [
   {
@@ -24,12 +31,12 @@ const items = [
   },
   {
     href: '/layout',
-    icon: (<UsersIcon fontSize="small" />),
+    icon: (<DashboardIcon fontSize='small' />),
     title: 'Планировка'
   },
   {
     href: '/rent',
-    icon: (<ShoppingBagIcon fontSize="small" />),
+    icon: (<CurrencyRubleIcon fontSize="small" />),
     title: 'Аренда помещений'
   },
   {
@@ -39,12 +46,12 @@ const items = [
   },
   {
     href: '/CCTV',
-    icon: (<CogIcon fontSize="small" />),
+    icon: (<VideocamIcon fontSize="small" />),
     title: 'Видеонаблюдение'
   },
   {
-    href: '/login',
-    icon: (<LockIcon fontSize="small" />),
+    href: '/meters',
+    icon: (<BarChartIcon fontSize="small" />),
     title: 'Показание счётчиков'
   },
   {
@@ -59,6 +66,7 @@ const items = [
   // }
 ];
 
+
 export const DashboardSidebar = (props) => {
   const { open, onClose } = props;
   const router = useRouter();
@@ -66,6 +74,12 @@ export const DashboardSidebar = (props) => {
     defaultMatches: true,
     noSsr: false
   });
+  const { setChosedHouse, chosedHouse, houses, setHouses } = useContext(Context)
+
+  useEffect(() => {
+    axios.get('http://10.2.0.84:9091/houses').then(({data}) => {setHouses(data), setChosedHouse(data[0])})
+  }, [])
+  
 
   useEffect(
     () => {
@@ -95,6 +109,7 @@ export const DashboardSidebar = (props) => {
             <NextLink href="/" passHref>
               <a style={{ display:'flex', flexDirection:'row', alignItems:'center', gap:'25px', textDecoration:'none', color:'white'}}>
                 <Logo sx={{height: 42, width: 42}} />
+                {/* <img src={'../../icons/BananaLogo.svg'} /> */}
                 <Box sx={{textAlign:'center', fontSize:'20px'}}>
                   BHM
                 </Box>
@@ -102,7 +117,14 @@ export const DashboardSidebar = (props) => {
             </NextLink>
           </Box>
           <Box sx={{textAlign:'center'}}>
-            Banana House Manager
+              {/* {houses?.map((h) =><Option value={h.houseName}>{h.houseName}</Option>)} */}
+            <FormControl  sx={{m:1, minWidth:'90%'}}>
+              <InputLabel id='label'>Объект</InputLabel>
+              <Select style={{color:'white'}} labelId="label" label='Объект' value={chosedHouse} onChange={(e) => setChosedHouse(e.target.value)}>
+                {houses?.map((h, i) =><MenuItem value={h}>{h.houseName}</MenuItem>)}
+              </Select>
+              <FormHelperText>{chosedHouse && 'Улица: ' + chosedHouse.address}</FormHelperText>
+            </FormControl>
           </Box>
         </div>
         <Divider

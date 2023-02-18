@@ -1,4 +1,4 @@
-import { Fragment } from 'react';
+import { createContext, Fragment, useContext, useState } from 'react';
 import Head from 'next/head';
 import { CacheProvider } from '@emotion/react';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -13,38 +13,45 @@ import { theme } from '../theme';
 registerChartJs();
 
 const clientSideEmotionCache = createEmotionCache();
+export const Context = createContext(null);
 
 const App = (props) => {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
-
+  const Store = useContext(Context)
   const getLayout = Component.getLayout ?? ((page) => page);
-
+  const [houses, setHouses] = useState([])
+  const [chosedHouse, setChosedHouse] = useState()
   return (
-    <CacheProvider value={emotionCache}>
-      <Head>
-        <title>
-          Material Kit Pro
-        </title>
-        <meta
-          name="viewport"
-          content="initial-scale=1, width=device-width"
-        />
-      </Head>
-      <LocalizationProvider dateAdapter={AdapterDateFns}>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <AuthProvider>
-            <AuthConsumer>
-              {
-                (auth) => auth.isLoading
-                  ? <Fragment />
-                  : getLayout(<Component {...pageProps} />)
-              }
-            </AuthConsumer>
-          </AuthProvider>
-        </ThemeProvider>
-      </LocalizationProvider>
-    </CacheProvider>
+    <Context.Provider value={{
+      houses, setHouses,
+      chosedHouse, setChosedHouse
+    }}>
+      <CacheProvider value={emotionCache}>
+        <Head>
+          <title>
+            Material Kit Pro
+          </title>
+          <meta
+            name="viewport"
+            content="initial-scale=1, width=device-width"
+          />
+        </Head>
+        <LocalizationProvider dateAdapter={AdapterDateFns}>
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <AuthProvider>
+              <AuthConsumer>
+                {
+                  (auth) => auth.isLoading
+                    ? <Fragment />
+                    : getLayout(<Component {...pageProps} />)
+                }
+              </AuthConsumer>
+            </AuthProvider>
+          </ThemeProvider>
+        </LocalizationProvider>
+      </CacheProvider>
+    </Context.Provider>
   );
 };
 

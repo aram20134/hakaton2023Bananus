@@ -1,0 +1,13 @@
+.animate {
+    background-color: red;
+    color: red;
+    animation: enter 0.4s;
+}
+@keyframes enter {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}

@@ -4,58 +4,63 @@ import { products } from '../__mocks__/products';
 import { ProductListToolbar } from '../components/product/product-list-toolbar';
 import { ProductCard } from '../components/product/product-card';
 import { DashboardLayout } from '../components/dashboard-layout';
+import { CustomerListToolbar } from '../components/customer/layout-list';
+import { useState } from 'react';
 
-const Page = () => (
-  <>
-    <Head>
-      <title>
-        Аренда помещений | Bananos House Manager
-      </title>
-    </Head>
-    <Box
-      component="main"
-      sx={{
-        flexGrow: 1,
-        py: 8
-      }}
-    >
-      <Container maxWidth={false}>
-        <ProductListToolbar />
-        <Box sx={{ pt: 3 }}>
-          <Grid
-            container
-            spacing={3}
+const Page = () => {
+  const [search, setSearch] = useState()
+  return (
+    <>
+      <Head>
+        <title>
+          Аренда помещений | Bananos House Manager
+        </title>
+      </Head>
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          py: 8
+        }}
+      >
+        <Container maxWidth={false}>
+          <CustomerListToolbar value={search} setValue={setSearch} placeholder={'Поиск аренд'} title='Аренда помещений'  />
+          <Box sx={{ pt: 3 }}>
+            <Grid
+              container
+              spacing={3}
+            >
+              {products.map((product) => (
+                <Grid
+                  item
+                  key={product.id}
+                  lg={4}
+                  md={6}
+                  xs={12}
+                >
+                  <ProductCard product={product} />
+                </Grid>
+              ))}
+            </Grid>
+          </Box>
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              pt: 3
+            }}
           >
-            {products.map((product) => (
-              <Grid
-                item
-                key={product.id}
-                lg={4}
-                md={6}
-                xs={12}
-              >
-                <ProductCard product={product} />
-              </Grid>
-            ))}
-          </Grid>
-        </Box>
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'center',
-            pt: 3
-          }}
-        >
-          <Pagination
-            color="primary"
-            count={3}
-            size="small"
-          />
-        </Box>
-      </Container>
-    </Box>
-  </>
-);
+            <Pagination
+              color="primary"
+              count={3}
+              size="small"
+            />
+          </Box>
+        </Container>
+      </Box>
+    </>
+  )
+};
 
 Page.getLayout = (page) => (
   <DashboardLayout>

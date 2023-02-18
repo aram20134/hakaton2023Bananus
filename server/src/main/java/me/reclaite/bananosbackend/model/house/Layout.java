@@ -1,6 +1,8 @@
 package me.reclaite.bananosbackend.model.house;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Data;
 import lombok.Getter;
@@ -13,9 +15,12 @@ import lombok.Setter;
 public class Layout {
 
     @Id
-    private int id;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private Long id;
 
-    private int area;
+    private float area;
     private int roomsAmount;
+
+    private String picturePath;
 
 }

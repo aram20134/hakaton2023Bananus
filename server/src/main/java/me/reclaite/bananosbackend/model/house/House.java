@@ -1,11 +1,11 @@
 package me.reclaite.bananosbackend.model.house;
 
-import jakarta.annotation.Nullable;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import me.reclaite.bananosbackend.model.company.Company;
+import me.reclaite.bananosbackend.model.user.User;
 
 @Data
 @Getter
@@ -14,15 +14,17 @@ import lombok.Setter;
 public class House {
 
     @Id
-    private int id;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private Long id;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private Company owner;
+
     private String houseName;
     private String address;
     private HouseType houseType;
 
-    private int layoutId;
-
-    @Nullable
-    private int apartment;
-    private float price;
+    @OneToOne(cascade = CascadeType.ALL)
+    private Layout layout;
 
 }

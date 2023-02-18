@@ -17,16 +17,44 @@ public class HouseController {
 
     private final HouseService houseService;
 
-    @PostMapping
-    public House editHouse(@RequestParam("id") int houseId, @RequestBody HouseAction action) {
-        House house = houseService.getHouseRepository().getById(houseId);
+    @PostMapping("/housecreate")
+    public House createHouse(@RequestBody HouseAction action) {
+        House house = new House();
 
-        house.setHouseName(action.getHouseName());
-        house.setPrice(action.getPrice());
+        house.setOwner(action.getOwnerCompany());
+        house.setLayout(action.getLayout());
         house.setAddress(action.getHouseAddress());
-        house.setLayoutId(action.getLayoutId());
+        house.setHouseType(action.getHouseType());
 
         return house;
+    }
+
+    @PostMapping("/house")
+    public House editHouse(@RequestParam("id") long houseId, @RequestBody HouseAction action) {
+        House house = houseService.getHouseRepository().getReferenceById(houseId);
+
+        house.setHouseName(action.getHouseName());
+        house.setAddress(action.getHouseAddress());
+        house.setLayout(action.getLayout());
+
+        return house;
+    }
+
+    @PostMapping("/house_layout")
+    public String editHouseLayout(@RequestParam("id") long houseId,
+                                  @RequestParam("layoutPath") String layoutPath,
+                                  @RequestParam("area") float area,
+                                  @RequestParam("roomsAmount") int roomsAmount) {
+        House house = houseService.getHouseRepository().getReferenceById(houseId);
+
+        Layout layout = new Layout();
+        layout.setPicturePath(layoutPath);
+        layout.setArea(area);
+        layout.setRoomsAmount(roomsAmount);
+
+        house.setLayout(layout);
+
+        return "OK";
     }
 
     @GetMapping("/houses")

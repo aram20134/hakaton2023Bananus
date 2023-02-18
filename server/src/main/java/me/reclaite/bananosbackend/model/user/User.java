@@ -1,22 +1,23 @@
 package me.reclaite.bananosbackend.model.user;
 
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
-@Entity
 @Getter
+@Setter
+@Entity(name = "UserInfo")
 public class User {
 
     @Id
-    private int id;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private Long id;
     // todo: auth with the telegram bot
     private int telegramId;
 
     @ElementCollection
-    private List<Integer> ownedHouses;
+    private List<Long> ownedHouses;
 
 }

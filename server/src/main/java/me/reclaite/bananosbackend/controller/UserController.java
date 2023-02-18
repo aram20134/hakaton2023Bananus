@@ -8,6 +8,7 @@ import me.reclaite.bananosbackend.model.house.House;
 import me.reclaite.bananosbackend.model.report.Report;
 import me.reclaite.bananosbackend.model.report.ReportStatus;
 import me.reclaite.bananosbackend.model.user.User;
+import me.reclaite.bananosbackend.repository.ApartmentMetricRepository;
 import me.reclaite.bananosbackend.repository.ApartmentRepository;
 import me.reclaite.bananosbackend.repository.ReportRepository;
 import me.reclaite.bananosbackend.repository.UserRepository;
@@ -24,6 +25,7 @@ public class UserController {
 
     private final HouseService houseService;
     private final ApartmentRepository apartmentRepository;
+    private final ApartmentMetricRepository metricRepository;
     private final ReportRepository reportRepository;
 
     @PostMapping("/complex")
@@ -50,6 +52,9 @@ public class UserController {
         metric.setGas(ApartmentMetric.getValue());
         metric.setHeating(ApartmentMetric.getValue());
         metric.setWater(ApartmentMetric.getValue());
+
+        metricRepository.saveAndFlush(metric);
+
         apartment.setMetric(metric);
 
         apartmentRepository.saveAndFlush(apartment);
@@ -84,8 +89,8 @@ public class UserController {
         User user = userRepository.getReferenceById(userId);
 
         Report report = new Report();
-        report.setReporterId(user.getId());
-        report.setHouseId(user.getOwnedHouse().getHouse().getId());
+        report.setOwnerName(user.getTelegramUsername());
+        report.setHouseName(user.getOwnedHouse().getHouse().getHouseName());
         report.setDescription(description);
 
         user.getOwnedHouse().getHouse().getReports().add(report);

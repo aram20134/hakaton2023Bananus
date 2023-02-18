@@ -34,7 +34,8 @@ public class DebugController {
         User user = userRepository.getReferenceById(userId);
 
         Report report = new Report();
-        report.setReporterId(user.getId());
+        report.setOwnerName(user.getTelegramUsername());
+        report.setHouseName(user.getOwnedHouse().getHouse().getHouseName());
         report.setDescription(description);
         report.setReportStatus(ReportStatus.IN_PROCESS);
 

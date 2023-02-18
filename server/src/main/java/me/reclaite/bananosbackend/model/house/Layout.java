@@ -15,7 +15,7 @@ import lombok.Setter;
 public class Layout {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private float area;

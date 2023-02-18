@@ -1,7 +1,7 @@
 package me.reclaite.bananosbackend.controller;
 
 import lombok.RequiredArgsConstructor;
-import me.reclaite.bananosbackend.model.ReportInfo;
+import me.reclaite.bananosbackend.model.report.ReportInfo;
 import me.reclaite.bananosbackend.model.UserCreateAction;
 import me.reclaite.bananosbackend.model.apartment.ApartmentMetric;
 import me.reclaite.bananosbackend.model.apartment.UserApartment;
@@ -9,7 +9,6 @@ import me.reclaite.bananosbackend.model.house.House;
 import me.reclaite.bananosbackend.model.report.Report;
 import me.reclaite.bananosbackend.model.report.ReportStatus;
 import me.reclaite.bananosbackend.model.user.User;
-import me.reclaite.bananosbackend.repository.ApartmentMetricRepository;
 import me.reclaite.bananosbackend.repository.ApartmentRepository;
 import me.reclaite.bananosbackend.repository.ReportRepository;
 import me.reclaite.bananosbackend.repository.UserRepository;

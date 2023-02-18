@@ -6,9 +6,9 @@ import me.reclaite.bananosbackend.model.house.HouseType;
 import me.reclaite.bananosbackend.model.house.Layout;
 
 @Data
-public class HouseAction {
+public class HouseData {
 
-    private final int id;
+    private final Long id;
 
     private final Company ownerCompany;
 

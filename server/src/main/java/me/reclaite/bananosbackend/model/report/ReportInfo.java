@@ -1,4 +1,4 @@
-package me.reclaite.bananosbackend.model;
+package me.reclaite.bananosbackend.model.report;
 
 import lombok.Data;
 import lombok.Getter;

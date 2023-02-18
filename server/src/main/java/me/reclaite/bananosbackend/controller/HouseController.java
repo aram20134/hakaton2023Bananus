@@ -2,13 +2,17 @@ package me.reclaite.bananosbackend.controller;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import me.reclaite.bananosbackend.model.HouseAction;
+import me.reclaite.bananosbackend.model.HouseData;
 import me.reclaite.bananosbackend.model.HouseAppliance;
+import me.reclaite.bananosbackend.model.apartment.ApartmentMetric;
 import me.reclaite.bananosbackend.model.apartment.UserApartment;
+import me.reclaite.bananosbackend.model.company.Company;
 import me.reclaite.bananosbackend.model.house.House;
 import me.reclaite.bananosbackend.model.house.Layout;
 import me.reclaite.bananosbackend.model.user.User;
+import me.reclaite.bananosbackend.repository.LayoutRepository;
 import me.reclaite.bananosbackend.repository.UserRepository;
+import me.reclaite.bananosbackend.service.CompanyService;
 import me.reclaite.bananosbackend.service.HouseService;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,24 +25,33 @@ import java.util.List;
 @Getter
 public class HouseController {
 
+    private final CompanyService companyService;
+
     private final HouseService houseService;
+    private final LayoutRepository layoutRepository;
     private final UserRepository userRepository;
 
-    @PostMapping("/housecreate")
-    public House createHouse(@RequestBody HouseAction action) {
+    @PostMapping("/house/create")
+    public House createHouse(@RequestBody HouseData action) {
         House house = new House();
 
-        house.setOwner(action.getOwnerCompany());
+        Company ownerCompany = action.getOwnerCompany();
+        ownerCompany.getOwnedHouses().add(house);
+
+        house.setOwner(ownerCompany);
         house.setLayouts(Collections.singletonList(action.getLayout()));
         house.setAddress(action.getHouseAddress());
         house.setHouseType(action.getHouseType());
 
+        houseService.getHouseRepository().saveAndFlush(house);
+        companyService.getCompanyRepository().saveAndFlush(ownerCompany);
+
         return house;
     }
 
-    @PostMapping("/house")
-    public House editHouse(@RequestParam("id") long houseId, @RequestBody HouseAction action) {
-        House house = houseService.getHouseRepository().getReferenceById(houseId);
+    @PostMapping("/house/edit")
+    public House editHouse(@RequestBody HouseData action) {
+        House house = houseService.getHouseRepository().getReferenceById(action.getId());
 
         house.setHouseName(action.getHouseName());
         house.setAddress(action.getHouseAddress());
@@ -47,7 +60,7 @@ public class HouseController {
         return house;
     }
 
-    @PostMapping("/house_layout")
+    @PostMapping("/house/layout")
     public String editHouseLayout(@RequestParam("id") long houseId,
                                   @RequestParam("layoutPath") String layoutPath,
                                   @RequestParam("area") float area,
@@ -59,27 +72,32 @@ public class HouseController {
         layout.setArea(area);
         layout.setRoomsAmount(roomsAmount);
 
-        house.setLayouts(Collections.singletonList(layout));
+        house.getLayouts().add(layout);
+
+        layoutRepository.saveAndFlush(layout);
+        houseService.getHouseRepository().saveAndFlush(house);
 
         return "OK";
     }
 
-    @GetMapping("/allservices")
+    @GetMapping("/house/supply/all")
     public HouseAppliance getServices(@RequestParam("id") long houseId) {
         HouseAppliance houseAppliance = new HouseAppliance();
 
-        List<UserApartment> collect = userRepository
+        List<ApartmentMetric> userApartments = houseService.getHouseRepository()
                 .findAll()
                 .stream()
-                .map(User::getOwnedHouse)
-                .filter(ownedHouse -> ownedHouse.getHouse().getId() == houseId)
+                .filter(house -> house.getId() == houseId)
+                .map(House::getApartments)
+                .flatMap(List::stream)
+                .map(UserApartment::getMetric)
                 .toList();
 
-        for (UserApartment apartment : collect) {
-            houseAppliance.setElectricity(apartment.getMetric().getElectricity());
-            houseAppliance.setHeating(apartment.getMetric().getHeating());
-            houseAppliance.setGas(apartment.getMetric().getGas());
-            houseAppliance.setWater(apartment.getMetric().getWater());
+        for (ApartmentMetric apartmentMetric : userApartments) {
+            houseAppliance.setElectricity(apartmentMetric.getElectricity());
+            houseAppliance.setHeating(apartmentMetric.getHeating());
+            houseAppliance.setGas(apartmentMetric.getGas());
+            houseAppliance.setWater(apartmentMetric.getWater());
         }
 
         return houseAppliance;

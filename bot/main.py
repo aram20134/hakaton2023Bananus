@@ -6,8 +6,6 @@ from aiogram.utils import executor
 
 dict = {"0":{"status": 0, "regist": 0}}
 username = ""
-#status = 0
-#regist = 0
 
 headers = {
     "Content-Type": "application/json",
@@ -27,21 +25,22 @@ async def process_start_command(message: types.Message):
     user_id = message.from_user.id
     response = requests.get(f"http://10.2.0.84:9091/tguser?tgId={user_id}")
 
-    #global regist
     global dict
-    id = dict['message.from_user.id']
+
+    if f'{user_id}' not in dict:
+        dict[f'{user_id}'] = {"status": 0, "regist": 0}
 
     if not response.text == "":
-        regist = 1
+        dict[f'{message.from_user.id}']['regist'] = 1
 
-    if regist == 1:
+    if dict[f'{message.from_user.id}']['regist'] == 1:
         buttons = ["Написать заявку", "Запрос квитанции"]
         keyboard.add(*buttons)
     else:
         buttons = ["Регистрация"]
         keyboard.add(*buttons)
 
-    await message.reply("Привет! Есть вопросы?", reply_markup=keyboard)
+    await message.reply("Привет! Чем могу помочь?", reply_markup=keyboard)
 
 
 @dp.message_handler(commands=['help'])
@@ -51,18 +50,15 @@ async def process_help_command(message: types.Message):
 
 @dp.message_handler()
 async def msg(message: types.Message):
-    #global status
+    global dict
 
+    if f'{message.from_user.id}' not in dict:
+        dict[f'{message.from_user.id}'] = {"status": 0, "regist": 0}
+
+    print(dict)
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    #global regist
 
-    if message.text == "Написать заявку":
-        await bot.send_message(message.chat.id, "Напишите суть проблемы, и введите номер телефона")
-        status = 10
-    elif status == 10:
-        status = 0
-        print(message.text)
-    elif message.text == "Запрос квитанции":
+    if message.text == "Запрос квитанции":
         response = requests.get(f"http://10.2.0.84:9091/services?id={message.from_user.id}")
         data = response.json()
         gas = data["gas"]
@@ -70,28 +66,44 @@ async def msg(message: types.Message):
         water = data["water"]
         electricity = data["electricity"]
 
-        await bot.send_message(message.chat.id, f"Газ:{gas}\nГорячая вода:{heating}\nХолодная вода:{water}\nЭлектричество:{electricity}")
+        await bot.send_message(message.chat.id,f"Газ: {gas}\nГорячая вода: {heating} m³\nХолодная вода: {water} m³\nЭлектричество: {electricity} кВт⋅ч")
+        dict[f'{message.from_user.id}']['status'] = 0
+
+    elif message.text == "Написать обращение":
+        await bot.send_message(message.chat.id, "Напишите суть проблемы и мы постораемся решить её")
+        dict[f'{message.from_user.id}']['status'] = 10
+    elif dict[f'{message.from_user.id}']['status'] == 10:
+        dict[f'{message.from_user.id}']['status'] = 0
+
+        body = {
+            "telegramId": message.from_user.id,
+            "description": message.text
+        }
+
+        requests.post("http://10.2.0.84:9091/report", data=json.dumps(body), headers=headers)
+        print(message.text)
+        await message.reply("Ваша заявка отправлена на рассмотрение, мы свяжемся в кратчайшие сроки!")
 
     elif message.text == "Регистрация":
-        status = 1
+        dict[f'{message.from_user.id}']['status'] = 1
         await bot.send_message(message.chat.id, "Введите название объекта инфраструктуры\nПример: Аквариум")
-    elif status == 1:
+    elif dict[f'{message.from_user.id}']['status'] == 1:
 
         body = {
             "telegramId": message.from_user.id,
             "telegramUsername": message.from_user.username,
-            "complex": message.text,
+            "complex": message.text.upper(),
         }
 
         response = requests.post("http://10.2.0.84:9091/complex", headers=headers, data=json.dumps(body))
 
         if (response.text == "OK"):
-            status = 2
+            dict[f'{message.from_user.id}']['status'] = 2
             await bot.send_message(message.chat.id, "Номер квартиры/офиса/помещеня")
         else:
-            await bot.send_message(message.chat.id, "Объект инфроструктуры не найден")
+            await bot.send_message(message.chat.id, "Объект инфраструктуры не найден")
 
-    elif status == 2:
+    elif dict[f'{message.from_user.id}']['status'] == 2:
         buttons = ["Написать обращение", "Запрос квитанции"]
         keyboard.add(*buttons)
 
@@ -102,8 +114,8 @@ async def msg(message: types.Message):
         }
 
         requests.post("http://10.2.0.84:9091/register", headers=headers, data=json.dumps(body))
-        status = 0
-        await message.reply("Ваша заявка отправлена на рассмотрение, мы свяжемся в кратчайшие сроки!", reply_markup=keyboard)
+        dict[f'{message.from_user.id}']['status'] = 0
+        await message.reply("Вы успешно зарегистрированы", reply_markup=keyboard)
 
 
 if __name__ == '__main__':

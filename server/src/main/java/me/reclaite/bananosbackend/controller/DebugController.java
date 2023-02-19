@@ -10,6 +10,7 @@ import me.reclaite.bananosbackend.model.report.Report;
 import me.reclaite.bananosbackend.model.report.ReportStatus;
 import me.reclaite.bananosbackend.model.user.User;
 import me.reclaite.bananosbackend.repository.ApartmentRepository;
+import me.reclaite.bananosbackend.repository.LayoutRepository;
 import me.reclaite.bananosbackend.repository.ReportRepository;
 import me.reclaite.bananosbackend.repository.UserRepository;
 import me.reclaite.bananosbackend.service.CompanyService;
@@ -26,9 +27,10 @@ public class DebugController {
     private final HouseService houseService;
     private final UserRepository userRepository;
     private final ApartmentRepository apartmentRepository;
+    private final LayoutRepository layoutRepository;
     private final ReportRepository reportRepository;
 
-    @GetMapping("/create_report")
+    @GetMapping("/create/report")
     public String createReport(@RequestParam("user") long userId,
                                @RequestParam("description") String description) {
         User user = userRepository.getReferenceById(userId);
@@ -48,7 +50,7 @@ public class DebugController {
         return "OK";
     }
 
-    @GetMapping("/create_user")
+    @GetMapping("/create/user")
     public String createUser(@RequestParam("telegramId") long id,
                              @RequestParam("houseId") long houseId,
                              @RequestParam("telegramName") String username) {
@@ -68,23 +70,27 @@ public class DebugController {
         return "OK";
     }
 
-    @GetMapping("/create_house")
+    @GetMapping("/create/house")
     public String createHouse(@RequestParam("name") String name,
                               @RequestParam("companyId") long companyId,
                               @RequestParam("address") String address,
                               @RequestParam("type") HouseType type) {
         House house = new House();
+        Company company = companyService.getCompanyRepository().getReferenceById(companyId);
 
-        house.setOwner(companyService.getCompanyRepository().getReferenceById(companyId));
+        house.setOwner(company);
         house.setAddress(address);
-        house.setHouseName(name);
+        house.setHouseName(name.toUpperCase());
         house.setHouseType(type);
 
+        company.getOwnedHouses().add(house);
+
         houseService.getHouseRepository().saveAndFlush(house);
+        companyService.getCompanyRepository().saveAndFlush(company);
         return "OK";
     }
 
-    @GetMapping("/create_company")
+    @GetMapping("/create/company")
     public String createCompany(@RequestParam("name") String name) {
         Company company = new Company();
 
@@ -95,7 +101,7 @@ public class DebugController {
         return "OK";
     }
 
-    @GetMapping("/create_layout")
+    @GetMapping("/create/layout")
     public String createLayout(@RequestParam("roomsAmount") int roomsAmount,
                                @RequestParam("path") String picturePath,
                                @RequestParam("area") float area) {
@@ -105,7 +111,9 @@ public class DebugController {
         layout.setPicturePath(picturePath);
         layout.setArea(area);
 
+        layoutRepository.saveAndFlush(layout);
         houseService.getLayoutRepository().saveAndFlush(layout);
+
         return "OK";
     }
 }

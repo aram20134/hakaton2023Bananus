@@ -1,9 +1,12 @@
 package me.reclaite.bananosbackend.model.house;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import me.reclaite.bananosbackend.model.apartment.UserApartment;
 import me.reclaite.bananosbackend.model.company.Company;
 import me.reclaite.bananosbackend.model.report.Report;
 
@@ -16,10 +19,11 @@ import java.util.List;
 public class House {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JsonBackReference
     private Company owner;
 
     private String houseName;
@@ -34,5 +38,9 @@ public class House {
 
     @OneToMany
     private List<Report> reports;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<UserApartment> apartments;
 
 }

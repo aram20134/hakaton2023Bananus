@@ -9,7 +9,6 @@ public class UserCreateAction {
     private final String telegramUsername;
 
     private final String complex;
-
     private final int apartment;
 
 }

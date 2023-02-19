@@ -22,6 +22,7 @@ import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import { SeverityPill } from '../severity-pill';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import HandlingTable from './handlingTable';
 
 const style = {
   position: 'absolute',
@@ -108,59 +109,7 @@ export const LatestOrders = ({orders, search, setSearch, allReports = false}) =>
                 ))
               ) : (
                 orders.reports.filter((ord) => ord.description.toLowerCase().includes(search.toLowerCase())).reverse().map((order) => (
-                  <TableRow hover key={order.id}>
-                    <TableCell>
-                      {order.id}
-                    </TableCell>
-                    <TableCell>
-                      {order.ownerName}
-                    </TableCell>
-                    <TableCell>
-                      {orders.houseName}
-                    </TableCell>
-                    <TableCell>
-                      {format(new Date(order.creationDate), 'dd/MM/yyyy')}
-                    </TableCell>
-                    <TableCell>
-                      <Select onChange={(e) => axios.get(`http://10.2.0.84:9091/report_status?id=${order.id}&status=${e.target.value}`)} defaultValue={order.reportStatus}>
-                        <MenuItem value={'SOLVED'}>
-                          <SeverityPill color={'success'}>
-                            Решено
-                          </SeverityPill>
-                        </MenuItem>
-                        <MenuItem value={'IN_PROCESS'}>
-                          <SeverityPill color={'warning'}>
-                            В обработке
-                          </SeverityPill>  
-                        </MenuItem>
-                        <MenuItem value={'DECLINED'}>
-                          <SeverityPill color={'error'}>
-                            Отклонено
-                          </SeverityPill>   
-                        </MenuItem>
-                      </Select>
-                    </TableCell>
-                    <TableCell align='left'>
-                      <Button onClick={() => setOpen(true)} variant='outlined'>Подробно</Button>
-                    </TableCell>
-                    <Modal
-                      open={open}
-                      onClose={() => setOpen(!open)}
-                      aria-labelledby="modal-modal-title"
-                      aria-describedby="modal-modal-description">
-                      <Box sx={style}>
-                        <Typography id="modal-modal-title" variant="h6" component="h2">
-                          Описание жалобы
-                        </Typography>
-                        <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                          {order.description}
-                        </Typography>
-                        <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                          telegram: <a target={'_blank'} href={`https://t.me/${order.ownerName}`}>t.me/{order.ownerName}</a>
-                        </Typography>
-                      </Box>
-                    </Modal>
-                  </TableRow>
+                  <HandlingTable order={order} orders={orders} />
                 ))
               )}
               

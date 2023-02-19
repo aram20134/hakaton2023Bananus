@@ -68,7 +68,7 @@ const Skud = () => {
                           </Grid>
                         </CardContent>
                         <CardActions>
-                        <Box sx={{display: 'flex', p: 1, justifyContent:'flex-end', width:'100%'}}>
+                          <Box sx={{display: 'flex', p: 1, justifyContent:'flex-end', width:'100%'}}>
                             <Button color="primary" endIcon={<ArrowRight fontSize="small" />} size='large' variant="text">
                               Все
                             </Button>

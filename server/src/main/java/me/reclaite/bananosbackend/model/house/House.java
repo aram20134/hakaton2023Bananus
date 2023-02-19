@@ -1,5 +1,6 @@
 package me.reclaite.bananosbackend.model.house;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -22,6 +23,7 @@ public class House {
     private Long id;
 
     @ManyToOne(cascade = CascadeType.ALL)
+    @JsonBackReference
     private Company owner;
 
     private String houseName;

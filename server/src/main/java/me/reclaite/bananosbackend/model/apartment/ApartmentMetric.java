@@ -3,11 +3,13 @@ package me.reclaite.bananosbackend.model.apartment;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Random;
 
 @Entity
 @Getter
+@Setter
 public class ApartmentMetric {
 
     @Deprecated

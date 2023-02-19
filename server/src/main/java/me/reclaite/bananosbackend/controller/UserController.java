@@ -1,14 +1,15 @@
 package me.reclaite.bananosbackend.controller;
 
 import lombok.RequiredArgsConstructor;
-import me.reclaite.bananosbackend.model.report.ReportInfo;
 import me.reclaite.bananosbackend.model.UserCreateAction;
 import me.reclaite.bananosbackend.model.apartment.ApartmentMetric;
 import me.reclaite.bananosbackend.model.apartment.UserApartment;
 import me.reclaite.bananosbackend.model.house.House;
 import me.reclaite.bananosbackend.model.report.Report;
+import me.reclaite.bananosbackend.model.report.ReportInfo;
 import me.reclaite.bananosbackend.model.report.ReportStatus;
 import me.reclaite.bananosbackend.model.user.User;
+import me.reclaite.bananosbackend.repository.ApartmentMetricRepository;
 import me.reclaite.bananosbackend.repository.ApartmentRepository;
 import me.reclaite.bananosbackend.repository.ReportRepository;
 import me.reclaite.bananosbackend.repository.UserRepository;
@@ -42,12 +43,14 @@ public class UserController {
             return "Ошибка: такой дом не найден";
         }
 
-        houseService.getHouseRepository().saveAndFlush(house);
 
         UserApartment apartment = new UserApartment();
         apartment.setHouse(house);
 
+        house.getApartments().add(apartment);
+
         ApartmentMetric metric = new ApartmentMetric();
+        metric.setApartment(apartment);
         metric.setElectricity(ApartmentMetric.getValue());
         metric.setGas(ApartmentMetric.getValue());
         metric.setHeating(ApartmentMetric.getValue());
@@ -58,6 +61,7 @@ public class UserController {
         apartment.setMetric(metric);
 
         apartmentRepository.saveAndFlush(apartment);
+        houseService.getHouseRepository().saveAndFlush(house);
 
         user.setOwnedHouse(apartment);
         userRepository.saveAndFlush(user);
@@ -67,7 +71,7 @@ public class UserController {
 
     @PostMapping("/register")
     public String registerUser(@RequestBody UserCreateAction action) {
-        User user = userRepository.getReferenceById(action.getTelegramId());
+        User user = userRepository.getByTelegramId(action.getTelegramId());
 
         UserApartment userApartment = user.getOwnedHouse();
         House house = userApartment.getHouse();
@@ -77,6 +81,7 @@ public class UserController {
 
         user.setOwnedHouse(userApartment);
 
+        apartmentRepository.saveAndFlush(userApartment);
         userRepository.saveAndFlush(user);
 
         return "OK";

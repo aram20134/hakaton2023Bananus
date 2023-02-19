@@ -2,14 +2,13 @@ package me.reclaite.bananosbackend.controller;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import me.reclaite.bananosbackend.model.HouseData;
 import me.reclaite.bananosbackend.model.HouseAppliance;
+import me.reclaite.bananosbackend.model.HouseData;
 import me.reclaite.bananosbackend.model.apartment.ApartmentMetric;
 import me.reclaite.bananosbackend.model.apartment.UserApartment;
 import me.reclaite.bananosbackend.model.company.Company;
 import me.reclaite.bananosbackend.model.house.House;
 import me.reclaite.bananosbackend.model.house.Layout;
-import me.reclaite.bananosbackend.model.user.User;
 import me.reclaite.bananosbackend.repository.LayoutRepository;
 import me.reclaite.bananosbackend.repository.UserRepository;
 import me.reclaite.bananosbackend.service.CompanyService;
@@ -43,8 +42,8 @@ public class HouseController {
         house.setAddress(action.getHouseAddress());
         house.setHouseType(action.getHouseType());
 
-        houseService.getHouseRepository().saveAndFlush(house);
         companyService.getCompanyRepository().saveAndFlush(ownerCompany);
+        houseService.getHouseRepository().saveAndFlush(house);
 
         return house;
     }
@@ -93,12 +92,19 @@ public class HouseController {
                 .map(UserApartment::getMetric)
                 .toList();
 
-        for (ApartmentMetric apartmentMetric : userApartments) {
-            houseAppliance.setElectricity(apartmentMetric.getElectricity());
-            houseAppliance.setHeating(apartmentMetric.getHeating());
-            houseAppliance.setGas(apartmentMetric.getGas());
-            houseAppliance.setWater(apartmentMetric.getWater());
-        }
+        System.out.println("+++++++++++++++++++++++++++++++");
+        System.out.println(userApartments);
+        System.out.println("+++++++++++++++++++++++++++++++");
+
+        double water = userApartments.stream().mapToDouble(ApartmentMetric::getWater).sum();
+        double heating = userApartments.stream().mapToDouble(ApartmentMetric::getHeating).sum();
+        double electricity = userApartments.stream().mapToDouble(ApartmentMetric::getElectricity).sum();
+        double gas = userApartments.stream().mapToDouble(ApartmentMetric::getGas).sum();
+
+        houseAppliance.setWater((float) water);
+        houseAppliance.setHeating((float) heating);
+        houseAppliance.setElectricity((float) electricity);
+        houseAppliance.setGas((float) gas);
 
         return houseAppliance;
     }

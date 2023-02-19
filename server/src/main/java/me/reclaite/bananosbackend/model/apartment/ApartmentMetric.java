@@ -30,8 +30,8 @@ public class ApartmentMetric {
 
     // TODO: connect to real meters instead of random generation
     @Deprecated
-    public static int getValue() {
-        return random.nextInt(304040);
+    public static float getValue() {
+        return random.nextInt(304040) * random.nextFloat();
     }
 
 }

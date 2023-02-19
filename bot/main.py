@@ -69,7 +69,7 @@ async def msg(message: types.Message):
         await bot.send_message(message.chat.id,f"Газ: {gas}\nГорячая вода: {heating} m³\nХолодная вода: {water} m³\nЭлектричество: {electricity} кВт⋅ч")
         dict[f'{message.from_user.id}']['status'] = 0
 
-    elif message.text == "Написать обращение":
+    elif message.text == "Написать заявку":
         await bot.send_message(message.chat.id, "Напишите суть проблемы и мы постораемся решить её")
         dict[f'{message.from_user.id}']['status'] = 10
     elif dict[f'{message.from_user.id}']['status'] == 10:
@@ -104,7 +104,7 @@ async def msg(message: types.Message):
             await bot.send_message(message.chat.id, "Объект инфраструктуры не найден")
 
     elif dict[f'{message.from_user.id}']['status'] == 2:
-        buttons = ["Написать обращение", "Запрос квитанции"]
+        buttons = ["Написать заявку", "Запрос квитанции"]
         keyboard.add(*buttons)
 
         body = {

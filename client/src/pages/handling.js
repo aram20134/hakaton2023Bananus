@@ -13,11 +13,13 @@ import { Context } from './_app';
 
 const Page = () => {
   const [search, setSearch] = useState('')
-  const { chosedHouse } = useContext(Context)
-
+  const { chosedHouse, houses } = useContext(Context)
+  const [open, setOpen] = useState(false)
+  
   useEffect(() => {
-    console.log(chosedHouse)
-  }, [])
+    console.log('chsd', chosedHouse)
+    console.log('allh', houses)
+  }, [chosedHouse, houses])
   
   return (
     <>
@@ -29,7 +31,7 @@ const Page = () => {
       <Box component="main" sx={{flexGrow: 1, py: 8}}>
         <Container maxWidth={false} style={{gap:'15px', display:'flex', flexDirection:'column'}}>
           <CustomerListToolbar placeholder={'Поиск заявлений'} title='Обработка заявлений' value={search} setValue={setSearch} />
-          {chosedHouse && <LatestOrders orders={chosedHouse} search={search} />}
+          {chosedHouse && <LatestOrders setOpen={setOpen} open={open} orders={chosedHouse} search={search} />}
         </Container>
       </Box>
     </>

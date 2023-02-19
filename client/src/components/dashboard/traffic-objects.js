@@ -3,6 +3,9 @@ import { Box, Card, CardContent, CardHeader, Divider, Typography, useTheme } fro
 import LaptopMacIcon from '@mui/icons-material/LaptopMac';
 import PhoneIcon from '@mui/icons-material/Phone';
 import TabletIcon from '@mui/icons-material/Tablet';
+import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import DangerousIcon from '@mui/icons-material/Dangerous';
+import LoopIcon from '@mui/icons-material/Loop';
 
 export const TrafficByDevice = (props) => {
   const theme = useTheme();
@@ -11,13 +14,13 @@ export const TrafficByDevice = (props) => {
     datasets: [
       {
         data: [63, 15, 22],
-        backgroundColor: ['#3F51B5', '#e53935', '#FB8C00'],
+        backgroundColor: ['green', '#e53935', '#FB8C00'],
         borderWidth: 8,
         borderColor: '#FFFFFF',
         hoverBorderColor: '#FFFFFF'
       }
     ],
-    labels: ['Desktop', 'Tablet', 'Mobile']
+    labels: ['Принятых', 'Отказ', 'В обаботке']
   };
 
   const options = {
@@ -44,28 +47,28 @@ export const TrafficByDevice = (props) => {
 
   const devices = [
     {
-      title: 'Desktop',
+      title: 'Прянятых',
       value: 63,
-      icon: LaptopMacIcon,
-      color: '#3F51B5'
+      icon: ThumbUpIcon,
+      color: 'green'
     },
     {
-      title: 'Tablet',
+      title: 'Отказ',
       value: 15,
-      icon: TabletIcon,
+      icon: DangerousIcon,
       color: '#E53935'
     },
     {
-      title: 'Mobile',
+      title: 'В обработке',
       value: 23,
-      icon: PhoneIcon,
+      icon: LoopIcon,
       color: '#FB8C00'
     }
   ];
 
   return (
     <Card {...props}>
-      <CardHeader title="Трафик по городам" />
+      <CardHeader title="Статистика по заявкам" />
       <Divider />
       <CardContent>
         <Box

@@ -10,9 +10,9 @@ import { pl } from 'date-fns/locale';
 import styles from '../theme/styles.module.css'
 
 const mockPlans = [
-  {title:'Первый этаж', subheader:'текст', img: '/static/images/plan2.jpg'},
-  {title:'Второй этаж', subheader:'ещё текстик', img: '/static/images/plan2.jpg'},
-  {title:'Третий этаж', subheader:'ещё текстик', img: '/static/images/plan2.jpg'},
+  {title:'Первый этаж', subheader:'АВАРИУМ', img: '/static/images/plan2.jpg'},
+  {title:'Второй этаж', subheader:'АВАРИУМ', img: '/static/images/lay2.jpg'},
+  {title:'Третий этаж', subheader:'АВАРИУМ', img: '/static/images/lay3.jpg'},
 ]
 
 const Page = () => {

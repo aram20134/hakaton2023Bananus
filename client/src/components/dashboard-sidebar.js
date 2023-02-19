@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
-import { Box, Button, Divider, Drawer, FormControl, FormHelperText, InputLabel, MenuItem, Select, Typography, useMediaQuery } from '@mui/material';
+import { Box, Button, Divider, Drawer, FormControl, FormHelperText, InputLabel, MenuItem, Modal, Select, Typography, useMediaQuery } from '@mui/material';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import { ChartBar as ChartBarIcon } from '../icons/chart-bar';
 import { Cog as CogIcon } from '../icons/cog';
@@ -15,13 +15,14 @@ import { Users as UsersIcon } from '../icons/users';
 import { XCircle as XCircleIcon } from '../icons/x-circle';
 import { Logo } from './logo';
 import { NavItem } from './nav-item';
-import { BananaLogo } from '../icons/bananaLogo';
+import BananaLogo from '../../public/static/images/logob.svg';
 import axios from 'axios'
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import VideocamIcon from '@mui/icons-material/Videocam';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import CurrencyRubleIcon from '@mui/icons-material/CurrencyRuble';
 import { Context } from '../pages/_app';
+import SettingsRemoteOutlinedIcon from '@mui/icons-material/SettingsRemoteOutlined';
 
 const items = [
   {
@@ -55,8 +56,8 @@ const items = [
     title: 'Показание счётчиков'
   },
   {
-    href: '/register',
-    icon: (<UserAddIcon fontSize="small" />),
+    href: '/skud',
+    icon: (<SettingsRemoteOutlinedIcon fontSize="small" />),
     title: 'СКУД и освещение'
   },
   // {
@@ -65,6 +66,18 @@ const items = [
   //   title: 'Error'
   // }
 ];
+
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid gray',
+  boxShadow: 24,
+  p: 4,
+};
 
 
 export const DashboardSidebar = (props) => {
@@ -108,8 +121,8 @@ export const DashboardSidebar = (props) => {
           <Box sx={{ p: 3 }}>
             <NextLink href="/" passHref>
               <a style={{ display:'flex', flexDirection:'row', alignItems:'center', gap:'25px', textDecoration:'none', color:'white'}}>
-                <Logo sx={{height: 42, width: 42}} />
-                {/* <img src={'../../icons/BananaLogo.svg'} /> */}
+                {/* <Logo sx={{height: 42, width: 42}} /> */}
+                <img src={BananaLogo.src} style={{width:70, height:70}} />
                 <Box sx={{textAlign:'center', fontSize:'20px'}}>
                   BHM
                 </Box>

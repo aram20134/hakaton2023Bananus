@@ -18,7 +18,7 @@ const Login = () => {
     let rand = min - 0.5 + Math.random() * (max - min + 1);
     return Math.round(rand);
   }
-
+  
   return (
     <>
       <Head>
@@ -29,16 +29,17 @@ const Login = () => {
       <Box component="main" sx={{flexGrow: 1, py: 8}}>
         <Container maxWidth={false}>
           <CustomerListToolbar placeholder={'Поиск объектов'} title='Счётчики' value={search} setValue={setSearch} />
-          <Grid style={{marginTop:'1rem'}} container spacing={3}>
+          <Grid lg={12} sm={12} xl={12} xs={12} style={{marginTop:'1rem'}} container spacing={3}>
             {houses.filter((h) => h.houseName.toLowerCase().includes(search.toLowerCase())).map((h) => 
-              <Grid item lg={14} sm={6} xl={6} xs={12}>
+              <Grid item lg={12} sm={12} xl={12} xs={12}>
                 <Card className={styles.animate}>
                   <CardHeader subheader={h.address}  title={h.houseName} />
-                  <CardContent >
-                    <Grid item lg={12} sm={6} xl={6} xs={12} style={{gap:'25px', display:'flex'}}>
+                  <CardContent>
+                    <Grid wrap='wrap' item lg={12} sm={12} xl={12} xs={12} style={{gap:'25px', display:'flex', flexWrap:'wrap'}}>
                       <Water value={randomInteger(230, 1500)} type={'gas'} />
                       <Water value={randomInteger(230, 1500)} type={'cold'} />
                       <Water value={randomInteger(230, 1500)} type={'hot'} />
+                      <Water value={randomInteger(10, 100)} type={'garbage'} />
                     </Grid>
                   </CardContent>
                 </Card>

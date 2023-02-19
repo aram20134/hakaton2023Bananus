@@ -37,17 +37,29 @@ const Page = () => {
       container: mapContainer.current,
       style: 'mapbox://styles/mapbox/streets-v12', // style URL
       zoom: 11, // starting szosoms
-      center: [39, 45]
+      center: [39, 45.06]
     })
     // .fitBounds(bounds)
 
   }, [houses])
 
-
   useEffect(() => {
     if (!map.current) return
     // new mapboxgl.Marker().setLngLat([45, 39]).setPopup(new mapboxgl.Popup().setHTML("<h1>Hello World!</h1>")).addTo(map.current)
-    houses?.map((h) => new mapboxgl.Marker({}).setLngLat([h.longtitude, h.latitude]).setPopup(new mapboxgl.Popup().setHTML(`<div style={{display:'flex', flexDirection:'column', gap:'15px'}}><h2>${h.houseName}</h2><p>Улица: ${h.address}</p></div>`)).addTo(map.current))
+    const progressMarkers = houses.reduce((acc, cur) => {
+      var res = cur.reports.filter((mark) => mark.reportStatus === "IN_PROCESS")
+      if (res.length) {
+        acc.push(...res)
+      }
+      return acc
+    }, [])
+    houses?.map((h) => {
+      if (progressMarkers.filter((mark) => mark.houseName === h.houseName).length) {
+        return new mapboxgl.Marker({color:'red'}).setLngLat([h.longtitude, h.latitude]).setPopup(new mapboxgl.Popup().setHTML(`<div style={{display:'flex', flexDirection:'column', gap:'15px'}}><h2>${h.houseName}</h2><p>Улица: ${h.address}</p><p>необработанных заявок: ${progressMarkers.filter((mark) => mark.houseName === h.houseName).length}</p><a href="/handling">Перейти к заявкам</a></div>`)).addTo(map.current)
+      } else {
+        return new mapboxgl.Marker({}).setLngLat([h.longtitude, h.latitude]).setPopup(new mapboxgl.Popup().setHTML(`<div style={{display:'flex', flexDirection:'column', gap:'15px'}}><h2>${h.houseName}</h2><p>Улица: ${h.address}</p></div>`)).addTo(map.current)
+      }
+    })
   }, [map, houses])
 
   useEffect(() => {
@@ -83,9 +95,9 @@ const Page = () => {
           <Grid item lg={4} md={6} xl={3} xs={12}>
             <TrafficByDevice sx={{ height: '100%' }} />
           </Grid>
-          <Grid item lg={4} md={6} xl={3} xs={12}>
+          {/* <Grid item lg={4} md={6} xl={3} xs={12}>
             <LatestProducts sx={{ height: '100%' }} />
-          </Grid>
+          </Grid> */}
           <Grid item lg={8} md={12} xl={9} xs={12}>
             {allReports && <LatestOrders search={''} orders={allReports} allReports={true} />}
           </Grid>

@@ -37,7 +37,7 @@ const style = {
 
 export const LatestOrders = ({orders, search, setSearch, allReports = false}) => {
   const [open, setOpen] = useState(false)
-
+  
   useEffect(() => {
     console.log(orders)
   }, [])
@@ -65,9 +65,7 @@ export const LatestOrders = ({orders, search, setSearch, allReports = false}) =>
                 <TableCell>
                   Статус
                 </TableCell>
-                <TableCell>
-                  
-                </TableCell>
+                {!allReports ? <TableCell></TableCell> : ''}
               </TableRow>
             </TableHead>
             <TableBody>
@@ -106,9 +104,6 @@ export const LatestOrders = ({orders, search, setSearch, allReports = false}) =>
                         </MenuItem>
                       </Select>
                     </TableCell>
-                    <TableCell align='left'>
-                      <Button variant='outlined'>Подробно</Button>
-                    </TableCell>
                   </TableRow>
                 ))
               ) : (
@@ -118,7 +113,7 @@ export const LatestOrders = ({orders, search, setSearch, allReports = false}) =>
                       {order.id}
                     </TableCell>
                     <TableCell>
-                      {orders.owner.name}
+                      {order.ownerName}
                     </TableCell>
                     <TableCell>
                       {orders.houseName}
@@ -160,6 +155,9 @@ export const LatestOrders = ({orders, search, setSearch, allReports = false}) =>
                         <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                           {order.description}
                         </Typography>
+                        <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                          telegram: <a target={'_blank'} href={`https://t.me/${order.ownerName}`}>t.me/{order.ownerName}</a>
+                        </Typography>
                       </Box>
                     </Modal>
                   </TableRow>
@@ -177,13 +175,8 @@ export const LatestOrders = ({orders, search, setSearch, allReports = false}) =>
           p: 2
         }}
       >
-        <Button
-          color="primary"
-          endIcon={<ArrowRightIcon fontSize="small" />}
-          size="small"
-          variant="text"
-        >
-          View all
+        <Button color="primary" endIcon={<ArrowRightIcon fontSize="small" />} size="small" variant="text">
+          Все
         </Button>
       </Box>
     </Card>

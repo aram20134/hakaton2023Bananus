@@ -5,6 +5,8 @@ import ArrowUpward from '@mui/icons-material/ArrowUpward';
 import WhatshotIcon from '@mui/icons-material/Whatshot';
 import AcUnitIcon from '@mui/icons-material/AcUnit';
 import ElectricBoltIcon from '@mui/icons-material/ElectricBolt';
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+
 export const Water = ({type, value}) => {
   switch (type) {
     case 'hot':
@@ -95,6 +97,37 @@ export const Water = ({type, value}) => {
               </Typography>
               <Typography color="success.main" variant="caption">
                 за последний месяц
+              </Typography>
+            </Box>
+          </CardContent>
+        </Card>
+      )
+    case 'garbage':
+      return (
+        <Card elevation={6} sx={{ height: '100%' }}>
+          <CardContent>
+            <Grid container spacing={3} sx={{ justifyContent: 'space-between' }}>
+              <Grid item>
+                <Typography color="textSecondary" gutterBottom variant="overline">
+                  Вывоз мусора
+                </Typography>
+                <Typography color="textPrimary" variant="h4">
+                  {value} т
+                </Typography>
+              </Grid>
+              <Grid item>
+                <Avatar sx={{backgroundColor: 'green',height: 56,width: 56}}>
+                  <DeleteOutlineOutlinedIcon />
+                </Avatar>
+              </Grid>
+            </Grid>
+            <Box sx={{pt: 2,display: 'flex',alignItems: 'center'}}>
+              {/* <ArrowUpward color="success" /> */}
+              {/* <Typography color="success.main" sx={{mr: 1}}variant="body2">
+                23%
+              </Typography> */}
+              <Typography color="success.main" variant="caption">
+                последний вывоз: 18.02.2022
               </Typography>
             </Box>
           </CardContent>

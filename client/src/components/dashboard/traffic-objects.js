@@ -6,6 +6,7 @@ import TabletIcon from '@mui/icons-material/Tablet';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import DangerousIcon from '@mui/icons-material/Dangerous';
 import LoopIcon from '@mui/icons-material/Loop';
+import styles from '../../theme/styles.module.css'
 
 export const TrafficByDevice = (props) => {
   const theme = useTheme();
@@ -67,7 +68,7 @@ export const TrafficByDevice = (props) => {
   ];
 
   return (
-    <Card {...props}>
+    <Card className={styles.animate} {...props}>
       <CardHeader title="Статистика по заявкам" />
       <Divider />
       <CardContent>

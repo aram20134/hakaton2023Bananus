@@ -1,9 +1,10 @@
 import { Avatar, Box, Card, CardContent, Grid, Typography } from '@mui/material';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import PeopleIcon from '@mui/icons-material/PeopleOutlined';
+import styles from '../../theme/styles.module.css'
 
 export const TotalCustomers = (props) => (
-  <Card {...props}>
+  <Card className={styles.animate } {...props}>
     <CardContent>
       <Grid
         container

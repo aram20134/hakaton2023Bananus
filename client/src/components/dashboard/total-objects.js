@@ -1,9 +1,10 @@
 import { Avatar, Card, CardContent, Grid, Typography } from '@mui/material';
 import HouseIcon from '@mui/icons-material/House';
 import { Box } from '@mui/system';
+import styles from '../../theme/styles.module.css'
 
 export const TotalProfit = ({value}) => (
-  <Card>
+  <Card className={styles.animate}>
     <CardContent>
       <Grid container spacing={3} sx={{ justifyContent: 'space-between' }}>
         <Grid item>

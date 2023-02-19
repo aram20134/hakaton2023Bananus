@@ -3,7 +3,6 @@ import { Box, Card, CardHeader, CardMedia, Container, Grid, Typography } from '@
 import { CustomerListResults } from '../components/customer/customer-list-results';
 import { CustomerListToolbar } from '../components/customer/layout-list';
 import { DashboardLayout } from '../components/dashboard-layout';
-import { customers } from '../__mocks__/customers';
 import plan from '../../public/static/images/plan.png'
 import { useEffect, useState } from 'react';
 import { pl } from 'date-fns/locale';

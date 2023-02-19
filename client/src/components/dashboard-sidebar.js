@@ -133,7 +133,7 @@ export const DashboardSidebar = (props) => {
               {/* {houses?.map((h) =><Option value={h.houseName}>{h.houseName}</Option>)} */}
             <FormControl  sx={{m:1, minWidth:'90%'}}>
               <InputLabel id='label'>Объект</InputLabel>
-              <Select style={{color:'white'}} labelId="label" label='Объект' value={chosedHouse} onChange={(e) => setChosedHouse(e.target.value)}>
+              <Select style={{color:'white'}} labelId="label" label='Объект' value={chosedHouse?.houseName} onChange={(e) => setChosedHouse(e.target.value)}>
                 {houses?.map((h, i) =><MenuItem value={h}>{h.houseName}</MenuItem>)}
               </Select>
               <FormHelperText>{chosedHouse && 'Улица: ' + chosedHouse.address}</FormHelperText>

@@ -30,15 +30,15 @@ class CustomDocument extends Document {
             sizes="180x180"
             href="/apple-touch-icon.png"
           />
-          <link
+          {/* <link
             rel="icon"
             href="/favicon.ico"
-          />
+          /> */}
           <link
             rel="icon"
             type="image/png"
             sizes="32x32"
-            href="/favicon-32x32.png"
+            href="/logobdd.png"
           />
           <link
             rel="icon"

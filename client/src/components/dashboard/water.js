@@ -6,12 +6,13 @@ import WhatshotIcon from '@mui/icons-material/Whatshot';
 import AcUnitIcon from '@mui/icons-material/AcUnit';
 import ElectricBoltIcon from '@mui/icons-material/ElectricBolt';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+import styles from '../../theme/styles.module.css'
 
 export const Water = ({type, value}) => {
   switch (type) {
     case 'hot':
       return (
-        <Card elevation={6} sx={{ height: '100%' }}>
+        <Card className={styles.animate} elevation={6} sx={{ height: '100%' }}>
           <CardContent>
             <Grid container spacing={3} sx={{ justifyContent: 'space-between' }}>
               <Grid item>
@@ -42,7 +43,7 @@ export const Water = ({type, value}) => {
       )
     case 'cold':
       return (
-        <Card elevation={6} sx={{ height: '100%' }}>
+        <Card className={styles.animate} elevation={6} sx={{ height: '100%' }}>
           <CardContent>
             <Grid container spacing={3} sx={{ justifyContent: 'space-between' }}>
               <Grid item>
@@ -73,7 +74,7 @@ export const Water = ({type, value}) => {
       )
     case 'gas':
       return (
-        <Card elevation={6} sx={{ height: '100%' }}>
+        <Card className={styles.animate} elevation={6} sx={{ height: '100%' }}>
           <CardContent>
             <Grid container spacing={3} sx={{ justifyContent: 'space-between' }}>
               <Grid item>
@@ -104,7 +105,7 @@ export const Water = ({type, value}) => {
       )
     case 'garbage':
       return (
-        <Card elevation={6} sx={{ height: '100%' }}>
+        <Card className={styles.animate} elevation={6} sx={{ height: '100%' }}>
           <CardContent>
             <Grid container spacing={3} sx={{ justifyContent: 'space-between' }}>
               <Grid item>
